@@ -31,8 +31,14 @@ namespace WebApi.AddControllers{
 
         [HttpGet]
         public List<Book> GetBooks(){
-            var bookList = BookList.OrderBy(x => x.Id).ToList<Book>();
+            var bookList = BookList.OrderBy(book => book.Id).ToList<Book>();
             return bookList;
+        }
+
+         [HttpGet("{id}")]
+        public Book GetById(int id){
+            var book = BookList.Where(book => book.Id == id).SingleOrDefault();
+            return book;
         }
 
     }
