@@ -1,5 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.BookOperations.CreateBook;
+using WebApi.BookOperations.GetBookDetail;
+using WebApi.BookOperations.GetBooks;
 using WebApi.DBOperations;
+using static WebApi.BookOperations.GetBookDetail.GetBookDetailQuery;
 
 namespace WebApi.AddControllers{
     [ApiController]
@@ -14,25 +21,47 @@ namespace WebApi.AddControllers{
  
 
         [HttpGet]
-        public List<Book> GetBooks(){
-            var bookList = _context.Books.OrderBy(book => book.Id).ToList<Book>();
-            return bookList;
+        public IActionResult GetBooks(){
+            GetBooksQuery query = new GetBooksQuery(_context);
+            var result = query.Handle();
+            return Ok(result);
         }
 
          [HttpGet("{id}")]
-        public Book GetById(int id){
-            var book = _context.Books.Where(book => book.Id == id).SingleOrDefault();
-            return book;
+        public IActionResult GetById(int id){
+            BookDetailViewModel result;
+            try
+            {
+                GetBookDetailQuery query = new GetBookDetailQuery(_context);
+                query.BookId = id;
+                result = query.Handle();
+            }
+            catch (Exception ex)
+            {
+                
+                return BadRequest(ex.Message);
+            }
+            
+            return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult AddBook([FromBody] Book newBook){
-            var book = _context.Books.SingleOrDefault(x => x.Title == newBook.Title);
-            if(book is not null){
-                return BadRequest();
+        public IActionResult AddBook([FromBody] CreateBookCommand newBook){
+            
+            CreateBookCommand command = new CreateBookCommand(_context);
+
+            try
+            {
+                command.Model = newBook;
+                command.Handle();
             }
-             _context.Books.Add(newBook);
-             _context.SaveChanges();
+            catch (Exception ex)
+            {
+                
+                return BadRequest(ex.Message);
+            }
+            
+     
              return Ok();
         }
 

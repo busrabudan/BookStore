@@ -1,0 +1,47 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using WebApi.Common;
+using WebApi.DBOperations;
+
+namespace WebApi.BookOperations.CreateBook{
+    public class CreateBookCommand{
+        public CreateBookModel Model { get; set; }
+        private readonly BookStoreDbContext _dbContext;
+        public CreateBookCommand(BookStoreDbContext dbContext){
+            _dbContext = dbContext;
+        }
+
+        public void Handle(){
+
+            var book = _dbContext.Books.SingleOrDefault(x => x.Title == Model.Title);
+
+            if(book is not null)
+                throw new InvalidOperationException("Kitap zaten mevcut");
+            
+            book = new Book();
+                book.Title = Model.Title;
+                book.GenreId = Model.GenreId;
+                book.PageCount = Model.PageCount;
+                book.PublisDate = Model.PublisDate;
+
+                _dbContext.Books.Add(book);
+                _dbContext.SaveChanges();
+            
+
+        }
+
+        public class CreateBookModel{
+            public string? Title { get; set; }
+            public int GenreId { get; set; }
+            public int PageCount { get; set; }
+            public DateTime PublisDate { get; set; }
+
+            public static implicit operator CreateBookModel(CreateBookCommand v)
+            {
+                throw new NotImplementedException();
+            }
+        }
+    }
+}
