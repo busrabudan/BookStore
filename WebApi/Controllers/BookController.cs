@@ -38,6 +38,8 @@ namespace WebApi.AddControllers{
             {
                 GetBookDetailQuery query = new GetBookDetailQuery(_context, _mapper);
                 query.BookId = id;
+                GetBookDetailQueryValidator validator = new GetBookDetailQueryValidator();
+                validator.ValidateAndThrow(query);
                 result = query.Handle();
             }
             catch (Exception ex)
@@ -61,11 +63,7 @@ namespace WebApi.AddControllers{
                 ValidationResult result = validator.Validate(command);
                 validator.ValidateAndThrow(command);
                 command.Handle();
-                // if(!result.IsValid)
-                //     foreach(var item in result.Errors)
-                //         Console.WriteLine("Özellik "+item.PropertyName+" - Hata Mesajı: "+item.ErrorMessage);
-                // else
-                //     
+               
             }
             catch (Exception ex)
             {
@@ -102,6 +100,8 @@ namespace WebApi.AddControllers{
             {
                 DeleteBookCommand command = new DeleteBookCommand(_context);
                 command.BookId = id;
+                DeleteBookCommandValidator validator = new DeleteBookCommandValidator();
+                validator.ValidateAndThrow(command);
                 command.Handle();
             }
             catch (Exception ex)
