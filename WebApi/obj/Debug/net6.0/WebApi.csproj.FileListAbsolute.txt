@@ -28,3 +28,5 @@ C:\Pratikler\Hello\BookStore\WebApi\obj\Debug\net6.0\ref\WebApi.dll
 C:\Pratikler\Hello\BookStore\WebApi\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
 C:\Pratikler\Hello\BookStore\WebApi\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
 C:\Pratikler\Hello\BookStore\WebApi\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.InMemory.dll
+C:\Pratikler\Hello\BookStore\WebApi\bin\Debug\net6.0\AutoMapper.dll
+C:\Pratikler\Hello\BookStore\WebApi\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
