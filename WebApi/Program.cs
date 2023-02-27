@@ -27,6 +27,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 app.UseHttpsRedirection();
 
