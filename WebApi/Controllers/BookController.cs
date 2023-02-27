@@ -1,4 +1,6 @@
 using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.BookOperations.CreateBook;
 using WebApi.BookOperations.DeleteBook;
@@ -24,7 +26,7 @@ namespace WebApi.AddControllers{
 
         [HttpGet]
         public IActionResult GetBooks(){
-            GetBooksQuery query = new GetBooksQuery(_context);
+            GetBooksQuery query = new GetBooksQuery(_context,_mapper);
             var result = query.Handle();
             return Ok(result);
         }
@@ -55,7 +57,15 @@ namespace WebApi.AddControllers{
             try
             {
                 command.Model = newBook.Model;  
+                CreateBookCommandValidator validator = new CreateBookCommandValidator();
+                ValidationResult result = validator.Validate(command);
+                validator.ValidateAndThrow(command);
                 command.Handle();
+                // if(!result.IsValid)
+                //     foreach(var item in result.Errors)
+                //         Console.WriteLine("Özellik "+item.PropertyName+" - Hata Mesajı: "+item.ErrorMessage);
+                // else
+                //     
             }
             catch (Exception ex)
             {

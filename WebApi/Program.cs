@@ -12,7 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<BookStoreDbContext>(options => options.UseInMemoryDatabase(databaseName: "BookStoreDB")); 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // IMapper için özel bir servis tanımlaması yapmamıza gerek yok. AutoMapper'ın kendisi bu servisi tanımlıyor.
 
 var app = builder.Build();
 

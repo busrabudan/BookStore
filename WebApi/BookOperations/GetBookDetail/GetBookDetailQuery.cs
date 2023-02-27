@@ -16,22 +16,19 @@ namespace WebApi.BookOperations.GetBookDetail{
         }
 
         public BookDetailViewModel Handle(){
-            var book = _dbContext.Books.Where(x => x.Id == BookId).SingleOrDefault();
+            var book = _dbContext.Books
+            .Where(x => x.Id == BookId).SingleOrDefault();
             if(book is null)
                 throw new InvalidOperationException("Kitap bulunamadı");
             BookDetailViewModel vm = _mapper.Map<BookDetailViewModel>(book); //new BookDetailViewModel();
-            // vm.Title = book.Title;
-            // vm.PageCount = book.PageCount.ToString();
-            // vm.PublishDate = book.PublisDate.Date.ToString("dd/MM/yyyy");
-            // vm.Genre = ((GenreEnum)book.GenreId).ToString();
             return vm;
         }
 
         public class BookDetailViewModel{
             public string Title { get; set; }
             public string Genre { get; set; }
-            public string PageCount { get; set; }
-            public string PublishDate { get; set; }
+            public int PageCount { get; set; }
+            public DateTime PublishDate { get; set; }
         }
     }
 }
